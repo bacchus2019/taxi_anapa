@@ -72,20 +72,14 @@ function sendSMSNotification(message) {
     const smsLink = document.createElement('a');
     smsLink.href = `sms:${adminPhone}?body=${smsText}`;
     
-    // Попытка открытия SMS-приложения (работает на мобильных устройствах)
-    try {
-        smsLink.click();
-    } catch (error) {
-        console.log('Не удалось автоматически открыть SMS-приложение:', error);
-    }
+    // Попытка автоматической отправки SMS (работает на большинстве мобильных устройств)
+    console.log('Попытка автоматической отправки SMS на номер:', adminPhone);
     
-    // Альтернативный способ отправки SMS через всплывающее окно
-    if (!window.matchMedia('(max-width: 768px)').matches) {
-        // На десктопах показываем информацию о необходимости вручную отправить SMS
-        setTimeout(() => {
-            alert(`Пожалуйста, отправьте SMS с заказом на номер 8 (918) 986-49-85:\n\n${message}`);
-        }, 1000);
-    }
+    // Попытка автоматической отправки SMS на всех устройствах
+    // Повторная попытка открытия SMS-приложения
+    setTimeout(() => {
+        window.location.href = `sms:${adminPhone}?body=${smsText}`;
+    }, 500);
     
     // Логируем сообщение заказа
     console.log('SMS уведомление отправлено на номер 8 (918) 986-49-85. Детали заказа:', message);
